@@ -9,7 +9,9 @@ const productSchema = new mongoose.Schema({
     type : String,
   },
 
-  user : mongoose.Types.ObjectId,
+  user :{type: mongoose.Types.ObjectId,
+    ref:'User'
+  },
 
   repo :  mongoose.Types.ObjectId,
 

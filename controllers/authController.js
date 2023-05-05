@@ -31,8 +31,7 @@ exports.signUp = async(req, res, next) => {
         role: req.body.role,
         phone: req.body.phone,
         gender: req.body.gender,
-
-        // image : req.file.filename
+         image : req.file.filename
     });
     createSendToken(newUser, 201, res);
 };
@@ -73,6 +72,7 @@ exports.protect = catchAsync(async(req, res, next) => {
     //     return next(new AppError('User recently changed password , please login again!', 401));
     // }
     req.user = currentUser;
+   // res.send("req.user"+req.user);
     next();
 });
 

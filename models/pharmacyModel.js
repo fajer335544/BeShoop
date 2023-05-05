@@ -26,12 +26,12 @@ const pharmacySchema = new mongoose.Schema({
     type : Boolean,
     default : false
   },
-  CommercialRegistrationNo : {
+  CommercialRegistrationNo : { // رقم السجل التجاري
     type : String,
     required : true
   },
 
-  pharmacyImage : String,
+  image :{type: String,default:''},
 
   repositories : {
     type : [mongoose.Types.ObjectId],
