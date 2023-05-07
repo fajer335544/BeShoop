@@ -7,13 +7,14 @@ const storage = multer.diskStorage({
   
   filename: (req, file, cb) => {
       const ext = file.mimetype.split('/')[1];
-      cb(null, `product_${Date.now()}_${file.originalname.split('.')[0]}.${ext}`);
+      cb(null, `product_${file.originalname.split('.')[0]}.${ext}`);
   }
 });
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
       cb(null, true)
+      
   } else {
       cb(new AppError('Not an image! please upload only images', 400), false);
   }

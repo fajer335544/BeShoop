@@ -3,6 +3,10 @@ const { promisify } = require('util');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const fs =require('fs');
+const path=require('path');
+
+
 // const sendEmail = require('./../utils/email');
 
 
@@ -23,7 +27,19 @@ const createSendToken = (user, statusCode, res) => {
 }
 
 exports.signUp = async(req, res, next) => {
+ const exect=await User.findOne({fullName:req.body.fullName,phone:phone})
 
+if(exect)
+{
+    res.status(403).send("this Name Was Already In Use !! Pleace pic a Diffirent One ")
+   // console.log((exect.image));
+    imageClear(exect.image)
+
+ 
+ 
+}
+else
+{
     const newUser = await User.create({
         fullName: req.body.fullName,
         password: req.body.password,
@@ -34,6 +50,7 @@ exports.signUp = async(req, res, next) => {
          image : req.file.filename
     });
     createSendToken(newUser, 201, res);
+}
 };
 
 exports.login = catchAsync(async(req, res, next) => {
@@ -160,3 +177,10 @@ exports.updatePassword = async(req, res, next) => {
     // 4) Log user in , send JWT
     createSendToken(user, 200, res);
 }
+
+const imageClear =(imagePath)=>{
+    filePath=path.join(__dirname,'../public/',imagePath);
+   console.log(filePath)
+    fs.unlink(filePath,err=>console.log(err))
+  }
+  
