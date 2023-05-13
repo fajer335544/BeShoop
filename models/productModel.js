@@ -28,6 +28,9 @@ const productSchema = new mongoose.Schema({
     type : Number,
     required :true
   },
+  newquantity:{
+    type : Number
+  },
   createAt:{
     type : Date,
     default : new Date().toISOString()

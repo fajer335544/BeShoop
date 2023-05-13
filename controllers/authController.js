@@ -27,7 +27,7 @@ const createSendToken = (user, statusCode, res) => {
 }
 
 exports.signUp = async(req, res, next) => {
- const exect=await User.findOne({fullName:req.body.fullName,phone:phone})
+ const exect=await User.findOne({fullName:req.body.fullName,phone:req.body.phone})
 
 if(exect)
 {

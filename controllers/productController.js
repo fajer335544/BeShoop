@@ -48,7 +48,7 @@ exports.getProductsByRepo = catchAsync(async (req,res,next)=>{
 
   const prods = await features.query.sort({createAt:-1});
 
-
+console.log(prods);
   // const currentUser = await User.findById(req.user.id);
   // let products;
   // if(currentUser && currentUser.manage){
