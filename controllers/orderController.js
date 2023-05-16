@@ -5,20 +5,21 @@ const Product=require('./../models/productModel')
 
 exports.createOrder = catchAsync(async (req,res,next)=>{
   // 
-  
+  let CreatOrder;
   for (let [Repositry, Products] of Object.entries(req.body))
   {
   let totalPrice=0;
    //console.log(Repositry);
-   const CreatOrder= await Order.create({
+    CreatOrder= await Order.create({
     repository:Repositry,
     pharmacy:req.user._id,
     status:'Processing',
+    totalPrice:0
    })
    for (var a in Products)
    {
      const IdOfProducts= Object.values(Products[a])[0]
-      totalPrice= totalPrice+Object.values(Products[a])[1]
+      totalPrice= totalPrice+Object.values(Products[a])[4]
     // console.log("Repositiry:"+Repositry)
      console.log("ID:"+ IdOfProducts)
     //  if(IdOfProducts)
@@ -29,7 +30,7 @@ exports.createOrder = catchAsync(async (req,res,next)=>{
   
      const prd = await Product.findById(IdOfProducts);
      const chech= await Product.findByIdAndUpdate(IdOfProducts,{
-       quantity : prd.quantity - 1
+       quantity : prd.quantity - Object.values(Products[a])[2]
      })
 
 
@@ -38,14 +39,16 @@ exports.createOrder = catchAsync(async (req,res,next)=>{
  }
 
  console.log("repo"+Repositry);
-    await Order.findByIdAndUpdate(Repositry,{totalPrice:totalPrice})
-   console.log("totalPrice for this repo"+totalPrice);
+   let price= await Order.findOne({repository:Repositry})
+   price.totalPrice=totalPrice;
+   price.save();
+   console.log("totalPrice for this repo :"+price.totalPrice);
 
 
 }
 
 
-res.status(200).json({message:"Your Order in Proccessing !!!"})
+res.status(200).json({message:CreatOrder});
   //const repo= await Repo.findById(req.body.id.toString()).populate({ path: 'products', select: 'quantity' })
   //res.send(req.params.id);
   //const exect=
