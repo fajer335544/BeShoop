@@ -37,8 +37,7 @@ exports.createOrder = catchAsync(async (req,res,next)=>{
    console.log("totalPrice for this repo"+totalPrice);
 }
 
-
- res.send("t")
+res.status(200).json({message:"Your Order in Proccessing !!!"})
   //const repo= await Repo.findById(req.body.id.toString()).populate({ path: 'products', select: 'quantity' })
   //res.send(req.params.id);
   //const exect=
