@@ -90,6 +90,7 @@ exports.protect = catchAsync(async(req, res, next) => {
     // }
     req.user = currentUser;
    // res.send("req.user"+req.user);
+  // res.send(req.user._id);
     next();
 });
 
