@@ -4,10 +4,17 @@ const catchAsync = require('./../utils/catchAsync');
 const Product=require('./../models/productModel')
 
 exports.createOrder = catchAsync(async (req,res,next)=>{
+  // 
+  
   for (let [Repositry, Products] of Object.entries(req.body))
   {
   let totalPrice=0;
    //console.log(Repositry);
+   const CreatOrder= await Order.create({
+    repository:Repositry,
+    pharmacy:req.user._id,
+    status:'Processing',
+   })
    for (var a in Products)
    {
      const IdOfProducts= Object.values(Products[a])[0]
@@ -15,14 +22,11 @@ exports.createOrder = catchAsync(async (req,res,next)=>{
     // console.log("Repositiry:"+Repositry)
      console.log("ID:"+ IdOfProducts)
     //  if(IdOfProducts)
-     await Order.create({
-      pharmacy:req.user._id,
-      products:Object.values(Products[a])[0],
-      status:'Processing',
-      repository:Repositry
-
-     })
-
+   
+     
+    CreatOrder.products.push(Object.values(Products[a])[0]);
+    CreatOrder.save();
+  
      const prd = await Product.findById(IdOfProducts);
      const chech= await Product.findByIdAndUpdate(IdOfProducts,{
        quantity : prd.quantity - 1
@@ -32,10 +36,14 @@ exports.createOrder = catchAsync(async (req,res,next)=>{
 
 
  }
+
  console.log("repo"+Repositry);
     await Order.findByIdAndUpdate(Repositry,{totalPrice:totalPrice})
    console.log("totalPrice for this repo"+totalPrice);
+
+
 }
+
 
 res.status(200).json({message:"Your Order in Proccessing !!!"})
   //const repo= await Repo.findById(req.body.id.toString()).populate({ path: 'products', select: 'quantity' })
@@ -46,9 +54,6 @@ res.status(200).json({message:"Your Order in Proccessing !!!"})
      exect.save();
      res.send(exect.products)
   */
-
-
-
  
   /*
 
